@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Tunebook</title>
+<style>
+body {
+	background: white;
+	color: black;
+	font-family: sans-serif;
+}
+h1 {
+	font-weight: normal;
+}
+#sheetmusic {
+	margin: 0;
+}
+</style>
+<script src="/static/js/abcjs_basic_1.12-min.js"></script>
+<script src="/static/js/html2canvas.js"></script>
+<script src="/static/js/FileSaver.min.js"></script>
+</head>
+<body>
+<h1>ABC Image Saver</h1>
+    <p><a href="/">Cancel and return to home page</a></p>
+<textarea name="abc" id="abc" cols="80" rows="15">
+M: 6/8
+L: 1/8
+K: Gmaj
+|:"G"G3 GAB|"D"A3 ABd|"G"edd gdd|edB "D"dBA|
+"G"GAG GAB|"D"ABA ABd|"G"edd gdd|"D"BAF "G"G3:|
+|:"G"B2B d2d|"C"ege "G"dBA|"G"GB2B dBG|"D"ABA AGA|
+"G"BAB d^cd|"C"ege "G"dBd|"G"gfg "D"aga|"G"bgg g3:|
+</textarea><br>
+<button onclick="Render()">Render</button>
+<button onclick="SavePng()">Save PNG</button>
+<div id="sheetmusic"></div>
+
+<script type="text/javascript">
+function Render() {
+    var abc = document.getElementById("abc").value;
+    var rp1 = {"scale": 1.57, "paddingtop":-10, "paddingbottom":-90, "paddingleft":10, "paddingright":14};
+    window.ABCJS.renderAbc("sheetmusic", abc, {}, rp1, {});
+}
+
+function SavePng() {
+    html2canvas(document.getElementById("sheetmusic"), {
+        onrendered: function(canvas) {
+            canvas.toBlob(function(blob) {
+                saveAs(blob, "myimg.png");
+            });
+        }});
+}
+</script>
+</body>
+</html>

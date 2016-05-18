@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tunebook</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/tunetable.css">
+  <head>
+  <body>
+    <h1>Search Results (list)</h1>
+    <p><a href="/">Home</a>&nbsp;&nbsp;&nbsp;<a href="/search_tune">Search again</a></p>
+    <p>Click on any tune ID to edit, or "image" to view sheet-music image. You might want to right-click and choose to view in another browser window/tab.</p>
+    <table>
+        <tr>
+            <th>ID#</th>
+            <th>Title</th>
+            <th>Type</th>
+            <th>T/S</th>
+            <th>Key</th>
+            <th>Image</th>
+        </tr>
+    {% for tune_id, title, tune_type, timesig, key, image_path in tunes %}
+        <tr>
+            <td><a href="/edit_tune/{{ tune_id }}">{{ tune_id }}</a></td>
+            <td>{{ title }}</td>
+            <td>{{ tune_type }}</td>
+            <td>{{ timesig }}</td>
+            <td>{{ key }})</td>
+            <td><a href="{{ image_path }}">image</a></td>
+        </tr>
+    {% endfor %}
+    <table>
+  </body>
+</html>
+

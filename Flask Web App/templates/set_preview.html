@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ book_name }}</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/setpreview.css">
+  <head>
+  <body>
+    <h1>{{ set_name }}
+    {% if wrap %}
+    <span>(wraps)</span>
+    {% endif %}
+    </h1>
+    {% for item in tune_list %}
+        <h2>{{ item[1] }}<span>{{ item[2] }}</span></h2>
+        <img src="{{ item[0] }}">
+    {% endfor %}
+  </body>
+</html>
+

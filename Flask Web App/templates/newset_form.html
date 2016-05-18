@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tunebook</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/setpreview.css">
+  <head>
+  <body>
+    <h1>Create New Set</h1>
+    <p><a href="/">Cancel and return to home page</a></p>
+    <form action="/new_set" method=post>
+        <p>Book Name: <input name="book_name" type="text"></p>
+        <p>Set Name: <input name="set_name" type="text"></p>
+        <p><input name="wrap" type="checkbox">Last tune wraps to first</p>
+        {% for i in [1,2,3,4,5,6] %}
+        <p>Tune {{ i }}:
+        Tune# <input name="tune_id_{{ i }}" type="number">&nbsp;&nbsp;
+        Repeats <input name="repeats_{{ i }}" type="text" value="(2A,2B)x2">
+        </p>
+        {% endfor %}
+        <p><input type="submit" value="Submit"></p>
+    </form>
+  </body>
+</html>
+

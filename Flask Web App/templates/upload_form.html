@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tunebook</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/setpreview.css">
+  <head>
+  <body>
+    <h1>Upload a new Tune image</h1>
+    <p><a href="/">Cancel and return to home page</a></p>
+    <p>You can upload JPG or PNG files.</p>
+    <form action="/upload" method=post enctype=multipart/form-data>
+        <p>Title: <input name="title" type="text"></p>
+        <p>Tune type: <input name="type" list="tunetypes">
+        <datalist id="tunetypes">
+            <option value="reel">
+            <option value="jig">
+            <option value="hornpipe">
+            <option value="waltz">
+            <option value="polka">
+            <option value="other">
+        </datalist>
+        </p>
+        <p>Time signature: <input name="timesig" list="timesigs">
+        <datalist id="timesigs">
+            <option value="2/4">
+            <option value="3/4">
+            <option value="4/4">
+            <option value="6/8">
+            <option value="9/8">
+        </datalist>
+        </p>
+        <p>Key: <input name="key" type="text"></p>
+        <p>URL (optional): <input name="url" type="text"></p>
+        <p>ABC code (optional): <textarea name="abc"></textarea></p>
+        <p><input name="img" type="file" accept="image/*"></p>
+        <p><input type="submit" value="Submit"></p>
+    </form>
+  </body>
+</html>
+

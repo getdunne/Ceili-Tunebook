@@ -1,0 +1,39 @@
+["KCB Big Book", [
+    ["Ceili Dance", [
+        ["Reels", [
+            ["Reel Set 1", true, [["/static/img/2.jpg", "Rattlin Bog", "(2A,2B)x2"], ["/static/img/3.jpg", "Farewell to Whiskey", "(2A,2B)x2"], ["/static/img/4.jpg", "The Spanish Lady", "(2A,2B)x2"]]],
+            ["Reel Set 2", true, [["/static/img/5.jpg", "White Cockade", "(2A,2B)x2"], ["/static/img/6.jpg", "Soldier's Joy", "(2A,2B)x2"], ["/static/img/7.jpg", "Rakes of Mallow", "(2A,2B)x2"]]],
+            ["Reel Set 2A", true, [["/static/img/5.jpg", "White Cockade", "(2A,2B)x2"], ["/static/img/6.jpg", "Soldier's Joy", "(2A,2B)x2"], ["/static/img/8.jpg", "Flowers of Edinburgh", "(2A,2B)x2"], ["/static/img/9.jpg", "Swallow's Tail", "(2A,2B)x2"]]],
+            ["Reel Set 3", true, [["/static/img/14.jpg", "Dark Girl in the Blue Dress", "(2A,2B)x2"], ["/static/img/15.jpg", "Grand Old Dame", "(2A,2B)x2"], ["/static/img/16.jpg", "Rose Tree I", "(2A,2B)x2"]]],
+            ["Reel Set 4", true, [["/static/img/17.jpg", "Girl I Left Behind", "(2A,2B)x2"], ["/static/img/18.jpg", "Drowsy Maggie", "(2A,2B)x2"], ["/static/img/19.jpg", "Cooley's", "(2A,2B)x2"]]],
+            ["Reel Set 4A", true, [["/static/img/20.jpg", "Sheehan's", "(2A,2B)x2"], ["/static/img/18.jpg", "Drowsy Maggie", "(2A,2B)x2"], ["/static/img/21.jpg", "Mountain Road", "(2A,2B)x2"], ["/static/img/19.jpg", "Cooley's", "(2A,2B)x2"]]],
+            ["Reel Set 4B", true, [["/static/img/22.jpg", "Man of the House", "(2A,2B)x2"], ["/static/img/23.jpg", "Humours of Tulla", "(2A,2B)x2"], ["/static/img/18.jpg", "Drowsy Maggie", "(2A,2B)x2"], ["/static/img/19.jpg", "Cooley's", "(2A,2B)x2"]]],
+            ["Reel Set 5", true, [["/static/img/8.jpg", "Flowers of Edinburgh", "(2A,2B)x2"], ["/static/img/9.jpg", "Swallow's Tail", "(2A,2B)x2"], ["/static/img/10.jpg", "The Teetotaler", "(2A,2B)x2"], ["/static/img/11.jpg", "The Star of Munster", "(2A,2B)x2"]]],
+            ["Reel Set 6", true, [["/static/img/24.jpg", "Whiskey Before Breakfast", "(2A,2B)x2"], ["/static/img/25.jpg", "Red Haired Boy", "(2A,2B)x2"], ["/static/img/26.jpg", "Musical Priest", "(2A,2B)x2"]]],
+            ["Reel Set 7", true, [["/static/img/27.jpg", "Pigeon on the Gate", "(2A,2B)x2"], ["/static/img/28.jpg", "The Old Copperplate", "(2A,2B)x2"], ["/static/img/29.jpg", "Glass of Beer", "(3A,1B)x2"], ["/static/img/30.jpg", "The Cup of Tea", "(2A,2B)x2"]]],
+            ["Reel Set 8", true, [["/static/img/31.jpg", "Wind That Shakes the Barley", "(1A,1B)x3"], ["/static/img/32.jpg", "Maid Behind the Bar", "(2A,2B)x2"], ["/static/img/33.jpg", "Miss McLeod", "(2A,2B)x2"], ["/static/img/34.jpg", "Gravel Walk", "(2A,1B,2C,2D)x2"]]]
+            ]],
+        ["Jigs", []],
+        ["Hornpipes", []],
+        ["Waltzes", []],
+        ["Marches", []],
+        ["Polkas", []],
+        ["Other", []]
+        ]
+    ],
+    ["Set Dance", [
+        ["Caledonian", []],
+        ["Cashel", []],
+        ["Clare Lancers", []],
+        ["Connemara", []],
+        ["Corofin", [
+            ["Corofin Sixth Figure", false, [["/static/img/12.jpg", "Dennis Murphy's", "(2A,2B)x2"], ["/static/img/2.jpg", "Rattlin Bog", "(2A,2B)x2"], ["/static/img/13.jpg", "John Ryan's Polka", "(2A,2B)x2"], ["/static/img/12.jpg", "Dennis Murphy's", "1A,1B"]]]
+            ]],
+        ["Derradda", []],
+        ["Mazurkas", []],
+        ["North Kerry", []],
+        ["Plain Set", []],
+        ["Plain Reel", []]
+        ]
+    ]
+]]

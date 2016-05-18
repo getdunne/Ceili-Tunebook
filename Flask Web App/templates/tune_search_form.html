@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tunebook</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/setpreview.css">
+  <head>
+  <body>
+    <h1>Search for Tunes</h1>
+    <p><a href="/">Cancel and return to home page</a></p>
+    <p>Leave all fields blank and click Search to list all tunes.</p>
+
+    <form action="/search_tune" method=post>
+        <p>Title: <input name="title" type="text"> (enter any fragment)</p>
+        <p>Tune type: <input name="type" list="tunetypes">
+        <datalist id="tunetypes">
+            <option value="reel">
+            <option value="jig">
+            <option value="hornpipe">
+            <option value="waltz">
+            <option value="polka">
+            <option value="other">
+        </datalist>
+        </p>
+        <p>Key: <input name="key" type="text"> (enter any prefix)</p>
+        <p><input type="submit" value="Search"></p>
+    </form>
+  </body>
+</html>
+

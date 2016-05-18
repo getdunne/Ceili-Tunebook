@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ book_name }}</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/setpreview.css">
+  <head>
+  <body>
+    <h1>Search Results</h1>
+    <p><a href="/">Home</a>&nbsp;&nbsp;&nbsp;<a href="/search_set">Search again</a></p>
+    {% for set_id, book_name, set_name in setlist %}
+        {{ book_name }}&nbsp;&nbsp;<a href="/set/{{ set_id }}">{{ set_name }}</a><br>
+    {% endfor %}
+    <ul>
+  </body>
+</html>
+

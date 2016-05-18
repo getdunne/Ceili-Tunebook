@@ -1,0 +1,18 @@
+body {
+    font-family: sans-serif;
+}
+
+h1, h2 {
+    color: blue;
+}
+
+th {
+    text-align: left;
+    padding: 15px;
+}
+
+td {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+

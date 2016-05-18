@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tunebook</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/setpreview.css">
+  <head>
+  <body>
+    <h1>Edit Tune #{{ tune_id }}: {{ title }}</h1>
+    <form action="/edit_tune/{{ tune_id }}" method=post enctype=multipart/form-data>
+        <p>Title: <input name="title" type="text" value="{{ title }}"></p>
+        <p>Tune type: <input name="type" list="tunetypes" value="{{ tune_type }}">
+        <datalist id="tunetypes">
+            <option value="reel">
+            <option value="jig">
+            <option value="hornpipe">
+            <option value="waltz">
+            <option value="polka">
+            <option value="other">
+        </datalist>
+        </p>
+        <p>Time signature: <input name="timesig" list="timesigs" value="{{ timesig }}">
+        <datalist id="timesigs">
+            <option value="2/4">
+            <option value="3/4">
+            <option value="4/4">
+            <option value="6/8">
+            <option value="9/8">
+        </datalist>
+        </p>
+        <p>Key: <input name="key" type="text" value="{{ key }}"></p>
+        <p>Source URL (optional): <input name="url" type="text" value="{{ url }}"></p>
+        <p>ABC code (optional): <textarea name="abc">{{ abc }}</textarea></p>
+        <p><input name="img" type="file" accept="image/*"></p>
+        <p><input type="submit" value="Submit Changes"></p>
+    </form>
+    <div><a href="/">Cancel and return to home page</a><div>
+    <img src="{{ image_path }}?u={{ ur }}">
+  </body>
+</html>
+

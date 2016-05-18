@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tunebook</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/setpreview.css">
+  <head>
+  <body>
+    <h1>Search for Sets</h1>
+    <p><a href="/">Cancel and return to home page</a></p>
+    <p>Leave all fields blank and click Search to list all sets
+    .</p>
+    <form action="/search_set" method=post>
+        <p>Book Name: <input name="book_name" type="text"> (enter any fragment)</p>
+        <p>Set Name: <input name="set_name" type="text"> (enter any fragment)</p>
+        <p><input type="submit" value="Search"></p>
+    </form>
+  </body>
+</html>
+
