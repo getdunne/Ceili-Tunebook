@@ -201,7 +201,10 @@ def awaitClick():
         for event in pygame.event.get():
             if event.type == MOUSEBUTTONDOWN:
                 waiting = False
-            if event.type == pygame.QUIT:
+            elif event.type == KEYDOWN and event.key == K_ESCAPE:
+                pygame.display.quit()
+                sys.exit(0)
+            elif event.type == pygame.QUIT:
                 sys.exit()
         pygame.time.wait(50)
 
