@@ -25,6 +25,13 @@
         <li><a href="/new_set">Create a new set</a></li>
         {% endif %}
     </ul>
+    <h2>Book Operations</h2>
+    <ul>
+        <li><a href="/search_book">Search for books</a></li>
+        {% if privileged %}
+        <li><a href="/new_book">Create a new book</a></li>
+        {% endif %}
+    </ul>
     <hr>
     <h3>ABC Operations (experimental)</h3>
     <ul>

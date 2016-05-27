@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tunebook</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/setpreview.css">
+  <head>
+  <body>
+    <h1>Search Results</h1>
+    <p><a href="/">Home</a>&nbsp;&nbsp;&nbsp;<a href="/search_book">Search again</a></p>
+    <p>Click on any book title to edit</p>
+    {% for book_id, book_name, url in booklist %}
+        <a href="/edit_book/{{ book_id }}">{{ book_id }}: {{ book_name }}</a><br>
+        {% if url %}
+        <img src="{{ url }}"><br>
+        {% endif %}
+    {% endfor %}
+    <ul>
+  </body>
+</html>

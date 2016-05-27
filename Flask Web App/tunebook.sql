@@ -16,9 +16,16 @@ CREATE TABLE tunes
 CREATE TABLE sets
 (
     id serial PRIMARY KEY,
-    book_name text,
-    set_name text,
+    book_name text,     -- name of original source book, e.g. "KCB Big Book"
+    set_name text,      -- title for this set
     wrap boolean,       -- true if set wraps from last tune to first
-    tune_list text      -- list of tuples [(tune_id, "(2A,2B)x2"), ... ]
+    tune_list text      -- JSON list of 2-element lists "[[tune_id, "(2A,2B)x2"], ... ]"
 );
 
+CREATE TABLE books
+(
+    id serial PRIMARY KEY,
+    name text,
+    url text,           -- URL for cover image, if any
+    content text        -- JSON nested-list structure, "[]" if empty
+);

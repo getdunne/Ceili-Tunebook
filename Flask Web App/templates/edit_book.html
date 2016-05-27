@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Tunebook</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">    <title>jstree</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" /><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+  <head>
+  <body class="container">
+    <h1>Edit Book #{{ book_id }}</h1>
+    <p><a href="/">Cancel and return to home page</a></p>
+    <form id="theForm" action="/edit_book/{{ book_id }}" method=post enctype=multipart/form-data>
+        <p>Name: <input id="booktitle" name="book_name" type="text" value="{{ book_name }}"></p>
+        <p><input name="img" type="file" accept="image/*"></p>
+        {% if url %}
+        <img src="{{ url }}">
+        {% endif %}
+        <input id="bookjs" name="content" type="hidden" value="{{ content }}">
+        <p><input type="submit" value="Submit Changes"></p>
+    </form>
+    
+    <div id="jstree"></div>
+    <div>
+        <button id="createBtn">Create Heading</button>
+        <button id="addSetBtn">Add Set</button>
+        <button id="deleteBtn">Delete Selected</button>
+        <button id="renameBtn">Rename Selected</button>
+    </div>
+    <script src="/static/js/jstree.js"></script>
+  </body>
+  <body>
+  </body>
+</html>
+

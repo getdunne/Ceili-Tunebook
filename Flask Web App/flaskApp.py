@@ -5,7 +5,7 @@ conn = psycopg2.connect(secrets.getDBConnectString())
 import random
 import json
 
-import tunes, sets
+import tunes, sets, books
 
 from flask import Flask, session, render_template, redirect, url_for, request, escape
 
@@ -185,6 +185,48 @@ def search_set():
         setlist = sets.search(conn, book_name, set_name)
         return render_template('set_search_result.html', setlist=setlist)
 
+@app.route('/new_book')
+def new_book():
+    if 'username' not in session: return redirect(url_for('login'))
+    book_id = books.create(conn, 'New Tune Book')
+    return redirect(url_for('edit_book', book_number=book_id))
+
+@app.route('/edit_book/<book_number>', methods=['GET', 'POST'])
+def edit_book(book_number):
+    if 'username' not in session: return redirect(url_for('login'))
+    book_id = int(book_number)
+    name, url, content = books.retrieve(conn, book_id)
+    if request.method == 'GET':
+        return render_template('edit_book.html', book_id=book_id, book_name=name, url=url, content=json.dumps(content))
+    else:
+        f = request.files['img']
+        t = f.content_type
+        file_ext = None
+        fileUploaded = True
+        if (t == 'image/jpeg'): file_ext = 'jpg'
+        elif (t == 'image/png'): file_ext = 'png'
+        else: fileUploaded = False
+        
+        name = request.form['book_name']
+        content = json.loads(request.form['content'])
+        if fileUploaded:
+            path = 'static/img/book%d.%s' % (book_id, file_ext)
+            f.save(path)
+            url = '/' + path
+        books.update(conn, book_id, name, url, content)
+        
+        return redirect(request.referrer)
+
+@app.route('/search_book', methods=['GET', 'POST'])
+def search_book():
+    if request.method == 'GET':
+        return render_template('book_search_form.html')
+    else:
+        book_name = request.form['book_name']
+        booklist = books.search(conn, book_name)
+        return render_template('book_search_result.html', booklist=booklist)
+
+
 @app.route('/edit_abc')
 def abcedit():
     return render_template('abc_edit.html')
@@ -222,5 +264,6 @@ def logout():
 if __name__ == '__main__':
     random.seed()
     app.secret_key = secrets.getSecretKey()
+    app.debug = True
     app.run(host='0.0.0.0')
 
