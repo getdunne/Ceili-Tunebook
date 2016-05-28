@@ -226,6 +226,27 @@ def search_book():
         booklist = books.search(conn, book_name)
         return render_template('book_search_result.html', booklist=booklist)
 
+def expand_sets(book):
+    if type(book) is list:
+        name, chapters = book
+        expandedChapters = list()
+        for chapter in chapters:
+            expandedChapters.append(expand_sets(chapter))
+        return [name, expandedChapters]
+    else:
+        set_id = int(book)
+        book_name, set_name, wrap, tune_list = sets.retrieve(conn, set_id)
+        tuneList = list()
+        for (tune_id, repeats) in tune_list:
+            image_path, title, composer, tune_type, timesig, key, file_ext, url, abc = tunes.retrieve(conn, tune_id)
+            tuneList.append([image_path, title, repeats])
+        return [set_name, wrap, tuneList]
+
+@app.route('/book_json/<book_id>')
+def book_json(book_id):
+    name, url, content = books.retrieve(conn, int(book_id))
+    book = [name, content]
+    return json.dumps(expand_sets(book))
 
 @app.route('/edit_abc')
 def abcedit():
