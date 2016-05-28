@@ -3,7 +3,7 @@ import pygame
 from pygame.locals import *
 import requests, json
 
-import images, tunesets, rendering
+import books, images, tunesets, rendering
 
 # screen dimensions
 screenSize = width, height = 2*960, 2*540
@@ -25,7 +25,7 @@ def buildDisplay(book, path, prevTitle, buttonWidth, buttonHeight, buttonSpacing
     return title, chapterList, backRect, buttonRects
 
 # open the book
-book = json.load(open('book.json'))
+book = json.load(open(books.fetch('/book_json/1')))
 path = []
 prevTitle = None
 bookTitle, chapterList, backRect, buttonRects = buildDisplay(book, path, prevTitle, buttonWidth, buttonHeight, buttonSpacing)

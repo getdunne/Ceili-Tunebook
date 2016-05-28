@@ -6,8 +6,8 @@ base_url = 'http://test123.podzone.net'
 
 def fetch(image_url):
     # typical image_url is '/static/img/2.jpg
-    fileName = image_url[12:]
-    imagePath = 'images/' + fileName
+    fileName = image_url[image_url.rfind('/')+1:]
+    imagePath = 'cache/' + fileName
     if not os.path.isfile(imagePath):
         # fetch the file only if not already in cache
         url = base_url + image_url
