@@ -261,9 +261,11 @@ def logout():
     session.pop('username', None)
     return redirect(url_for('home'))
 
+import platform
+
 if __name__ == '__main__':
     random.seed()
     app.secret_key = secrets.getSecretKey()
-    app.debug = True
+    app.debug = platform.system() == 'Windows'
     app.run(host='0.0.0.0')
 
