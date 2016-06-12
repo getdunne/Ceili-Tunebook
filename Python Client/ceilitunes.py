@@ -25,7 +25,7 @@ def buildDisplay(book, path, prevTitle, buttonWidth, buttonHeight, buttonSpacing
     return title, chapterList, backRect, buttonRects
 
 # open the book
-book = json.load(open(books.fetch('/book_json/1')))
+book = json.load(open(books.fetch('/book_json/1', force=True)))
 path = []
 prevTitle = None
 bookTitle, chapterList, backRect, buttonRects = buildDisplay(book, path, prevTitle, buttonWidth, buttonHeight, buttonSpacing)
