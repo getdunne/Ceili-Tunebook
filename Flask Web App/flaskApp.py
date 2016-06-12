@@ -4,6 +4,7 @@ conn = psycopg2.connect(secrets.getDBConnectString())
 
 import random
 import json
+import subprocess
 
 import tunes, sets, books
 
@@ -35,7 +36,6 @@ def upload():
         abc = request.form['abc']
         if abc == '': abc = None
         tune_id = tunes.create(conn, title, None, tune_type, timesig, key, file_ext, url, abc)
-        f.save('static/img/%d.%s' % (tune_id, file_ext))
         return render_template('upload_result.html',
             title=title,
             url=url,
