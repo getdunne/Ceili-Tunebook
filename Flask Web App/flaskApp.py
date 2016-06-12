@@ -40,6 +40,7 @@ def upload():
         else:
             subprocess.call(['./tune_image.sh', str(tune_id), 'static/img'])
             file_ext = png
+            tunes.update(conn, tune_id, title, None, tune_type, timesig, key, file_ext, url, abc)
         return render_template('upload_result.html',
             title=title,
             url=url,
@@ -51,7 +52,6 @@ def upload():
 def generateTuneImage(tune_id):
     tune_id = int(tune_id)
     image_path, title, composer, tune_type, timesig, key, file_ext, url, abc = tunes.retrieve(conn, tune_id)
-    print title, abc
     if abc is None: abc = ''
     return render_template('tune_img.html', abc=abc)
 
