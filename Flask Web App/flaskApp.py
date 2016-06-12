@@ -20,7 +20,6 @@ def upload():
     else:
         f = request.files['img']
         t = f.content_type
-        print 'Content-type is', t
         file_ext = None
         if (t == 'image/jpeg'): file_ext = 'jpg'
         elif (t == 'image/png'): file_ext = 'png'
@@ -36,6 +35,11 @@ def upload():
         abc = request.form['abc']
         if abc == '': abc = None
         tune_id = tunes.create(conn, title, None, tune_type, timesig, key, file_ext, url, abc)
+        if file_ext is not None:
+            f.save('static/img/%d.%s' % (tune_id, file_ext))
+        else:
+            subprocess.call(['phantomjs/tune_image.sh', str(tune_id), 'static/img'])
+            file_ext = png
         return render_template('upload_result.html',
             title=title,
             url=url,
