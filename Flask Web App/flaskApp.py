@@ -43,6 +43,14 @@ def upload():
             file_ext=file_ext,
             tune_id=tune_id)
 
+@app.route('/tune_img/<tune_id>')
+def generateTuneImage(tune_id):
+    tune_id = int(tune_id)
+    image_path, title, composer, tune_type, timesig, key, file_ext, url, abc = tunes.retrieve(conn, tune_id)
+    print title, abc
+    if abc is None: abc = ''
+    return render_template('tune_img.html', abc=abc)
+
 @app.route('/edit_tune/<tune_id>', methods=['GET', 'POST'])
 def editSpecificTune(tune_id):
     if 'username' not in session: return redirect(url_for('login'))
