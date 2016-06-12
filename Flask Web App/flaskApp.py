@@ -38,7 +38,7 @@ def upload():
         if file_ext is not None:
             f.save('static/img/%d.%s' % (tune_id, file_ext))
         else:
-            subprocess.call(['phantomjs/tune_image.sh', str(tune_id), 'static/img'])
+            subprocess.call(['./tune_image.sh', str(tune_id), 'static/img'])
             file_ext = png
         return render_template('upload_result.html',
             title=title,
