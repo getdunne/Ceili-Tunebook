@@ -4,7 +4,7 @@ conn = psycopg2.connect(secrets.getDBConnectString())
 
 import random
 import json
-import subprocess
+import subprocess, time
 
 import tunes, sets, books
 
@@ -38,9 +38,10 @@ def upload():
         if file_ext is not None:
             f.save('static/img/%d.%s' % (tune_id, file_ext))
         else:
-            subprocess.call(['./tune_image.sh', str(tune_id), 'static/img'])
+            subprocess.Popen(['./tune_image.sh', str(tune_id), 'static/img'])
             file_ext = png
             tunes.update(conn, tune_id, title, None, tune_type, timesig, key, file_ext, url, abc)
+            time.sleep(5)
         return render_template('upload_result.html',
             title=title,
             url=url,
