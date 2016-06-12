@@ -34,13 +34,13 @@ def upload():
         if url == '': url = None
         abc = request.form['abc']
         if abc == '': abc = None
-        tune_id = tunes.create(conn, title, None, tune_type, timesig, key, file_ext, url, abc)
         if file_ext is not None:
+            tune_id = tunes.create(conn, title, None, tune_type, timesig, key, file_ext, url, abc)
             f.save('static/img/%d.%s' % (tune_id, file_ext))
         else:
-            subprocess.Popen(['./tune_image.sh', str(tune_id), 'static/img'])
             file_ext = png
-            tunes.update(conn, tune_id, title, None, tune_type, timesig, key, file_ext, url, abc)
+            tune_id = tunes.create(conn, title, None, tune_type, timesig, key, file_ext, url, abc)
+            subprocess.Popen(['./tune_image.sh', str(tune_id), 'static/img'])
             time.sleep(5)
         return render_template('upload_result.html',
             title=title,
