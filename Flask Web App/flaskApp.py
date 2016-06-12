@@ -38,7 +38,7 @@ def upload():
             tune_id = tunes.create(conn, title, None, tune_type, timesig, key, file_ext, url, abc)
             f.save('static/img/%d.%s' % (tune_id, file_ext))
         else:
-            file_ext = png
+            file_ext = 'png'
             tune_id = tunes.create(conn, title, None, tune_type, timesig, key, file_ext, url, abc)
             subprocess.Popen(['./tune_image.sh', str(tune_id), 'static/img'])
             time.sleep(5)
