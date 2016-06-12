@@ -1,14 +1,6 @@
 import psycopg2
 
 def create(conn, title, composer, tune_type, timesig, key, file_ext, url, abc):
-    print title
-    print composer
-    print tune_type
-    print timesig
-    print key
-    print file_ext
-    print url
-    print abc
     cur = conn.cursor()
     cur.execute('insert into tunes (title, composer, tune_type, timesig, key, file_ext, url, abc) values (%s, %s, %s, %s, %s, %s, %s, %s) returning id', (title, composer, tune_type, timesig, key, file_ext, url, abc))
     tune_id = cur.fetchone()[0]
