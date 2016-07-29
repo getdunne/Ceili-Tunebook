@@ -105,7 +105,7 @@ def editSpecificTune(tune_id):
         url = request.form['url']
         if url == '': url = None
         new_abc = request.form['abc']
-        if new_abcabc == '': new_abcabc = None
+        if new_abc == '': new_abc = None
         if fileUploaded:
             # user uploaded a new image for this tune; replace any old one
             tunes.update(conn, tune_id, title, None, tune_type, timesig, key, file_ext, url, new_abc)
