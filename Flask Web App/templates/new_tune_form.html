@@ -5,10 +5,9 @@
     <link rel="stylesheet" type="text/css" href="/static/css/setpreview.css">
   <head>
   <body>
-    <h1>Upload a new Tune image</h1>
+    <h1>Create new Tune</h1>
     <p><a href="/">Cancel and return to home page</a></p>
-    <p>You can upload JPG or PNG files.</p>
-    <form action="/upload" method=post enctype=multipart/form-data>
+    <form action="/new_tune" method=post enctype=multipart/form-data>
         <p>Title: <input name="title" type="text"></p>
         <p>Tune type: <input name="type" list="tunetypes">
         <datalist id="tunetypes">
@@ -31,6 +30,7 @@
         </p>
         <p>Key: <input name="key" type="text"></p>
         <p>URL (optional): <input name="url" type="text"></p>
+        <p>You can upload a JPG or PNG file, OR just provide the ABC code and the system will generate an image automatically.</p>
         <p>ABC code (optional): <textarea name="abc"></textarea></p>
         <p><input name="img" type="file" accept="image/*"></p>
         <p><input type="submit" value="Submit"></p>

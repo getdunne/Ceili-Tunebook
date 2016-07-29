@@ -12,11 +12,11 @@ from flask import Flask, session, render_template, redirect, url_for, request, e
 
 app = Flask(__name__)
 
-@app.route('/upload', methods=['GET', 'POST'])
-def upload():
+@app.route('/new_tune', methods=['GET', 'POST'])
+def new_tune():
     if 'username' not in session: return redirect(url_for('login'))
     if request.method == 'GET':
-        return render_template('upload_form.html')
+        return render_template('new_tune_form.html')
     else:
         f = request.files['img']
         t = f.content_type
@@ -42,8 +42,9 @@ def upload():
             # no user-supplied image; create one based on ABC
             file_ext = 'png'
             tune_id = tunes.create(conn, title, None, tune_type, timesig, key, file_ext, url, abc)
-            subprocess.Popen(['./tune_image.sh', str(tune_id), 'static/img'])
-        return render_template('upload_result.html',
+            scriptName = 'tune_image.bat' if platform.system() == 'Windows' else './tune_image.sh'
+            subprocess.Popen([scriptName, str(tune_id), 'static/img'])
+        return render_template('new_tune_result.html',
             title=title,
             url=url,
             abc=abc,
@@ -113,8 +114,9 @@ def editSpecificTune(tune_id):
         elif new_abc != abc:
             # user did not upload a new tune image, but edited ABC; create new image
             file_ext = 'png'
-            tune_id = tunes.create(conn, title, None, tune_type, timesig, key, file_ext, url, new_abc)
-            subprocess.Popen(['./tune_image.sh', str(tune_id), 'static/img'])
+            tunes.update(conn, tune_id, title, None, tune_type, timesig, key, file_ext, url, new_abc)
+            scriptName = 'tune_image.bat' if platform.system() == 'Windows' else './tune_image.sh'
+            subprocess.Popen([scriptName, str(tune_id), 'static/img'])
             
         return redirect(request.referrer)
 
