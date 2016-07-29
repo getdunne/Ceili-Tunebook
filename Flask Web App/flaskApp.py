@@ -35,9 +35,11 @@ def upload():
         abc = request.form['abc']
         if abc == '': abc = None
         if file_ext is not None:
+            # user has uploaded a specific image for this tune
             tune_id = tunes.create(conn, title, None, tune_type, timesig, key, file_ext, url, abc)
             f.save('static/img/%d.%s' % (tune_id, file_ext))
         else:
+            # no user-supplied image; create one based on ABC
             file_ext = 'png'
             tune_id = tunes.create(conn, title, None, tune_type, timesig, key, file_ext, url, abc)
             subprocess.Popen(['./tune_image.sh', str(tune_id), 'static/img'])
@@ -102,11 +104,18 @@ def editSpecificTune(tune_id):
         if key == '': key = None
         url = request.form['url']
         if url == '': url = None
-        abc = request.form['abc']
-        if abc == '': abc = None
-        tunes.update(conn, tune_id, title, None, tune_type, timesig, key, file_ext, url, abc)
+        new_abc = request.form['abc']
+        if new_abcabc == '': new_abcabc = None
         if fileUploaded:
+            # user uploaded a new image for this tune; replace any old one
+            tunes.update(conn, tune_id, title, None, tune_type, timesig, key, file_ext, url, new_abc)
             f.save('static/img/%d.%s' % (tune_id, file_ext))
+        elif new_abc != abc:
+            # user did not upload a new tune image, but edited ABC; create new image
+            file_ext = 'png'
+            tune_id = tunes.create(conn, title, None, tune_type, timesig, key, file_ext, url, new_abc)
+            subprocess.Popen(['./tune_image.sh', str(tune_id), 'static/img'])
+            
         return redirect(request.referrer)
 
 @app.route('/search_tune', methods=['GET', 'POST'])
