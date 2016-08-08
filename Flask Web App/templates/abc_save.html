@@ -16,8 +16,9 @@ h1 {
 	margin: 0;
 }
 </style>
-<script src="/static/js/abcjs_basic_1.12-min.js"></script>
+<script src="/static/js/abcjs_basic_2.3-min.js"></script>
 <script src="/static/js/html2canvas.js"></script>
+<script src="/static/js/html2canvas.svg.js"></script>
 <script src="/static/js/FileSaver.min.js"></script>
 </head>
 <body>
@@ -39,7 +40,7 @@ K: Gmaj
 <script type="text/javascript">
 function Render() {
     var abc = document.getElementById("abc").value;
-    var rp1 = {"scale": 1.57, "paddingtop":-10, "paddingbottom":-90, "paddingleft":10, "paddingright":14};
+    var rp1 = {"staffwidth": 1100, "scale": 1.5};//{"scale": 1.57, "paddingtop":-10, "paddingbottom":-90, "paddingleft":10, "paddingright":14};
     window.ABCJS.renderAbc("sheetmusic", abc, {}, rp1, {});
 }
 
