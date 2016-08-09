@@ -11,6 +11,7 @@
     <table>
         <tr>
             <th>ID#</th>
+            <th>edit</th>
             <th>Title</th>
             <th>Type</th>
             <th>T/S</th>
@@ -20,6 +21,7 @@
     {% for tune_id, title, tune_type, timesig, key, image_path in tunes %}
         <tr>
             <td><a href="/edit_tune/{{ tune_id }}">{{ tune_id }}</a></td>
+            <td><a href="/edit_tune_abc/{{ tune_id }}">abc</a></td>
             <td>{{ title }}</td>
             <td>{{ tune_type }}</td>
             <td>{{ timesig }}</td>

@@ -40,7 +40,6 @@ def new_tune_abc():
 @app.route('/edit_tune_abc/<tune_id>', methods=['GET', 'POST'])
 def edit_tune_abc(tune_id):
     if 'username' not in session: return redirect(url_for('login'))
-    abc = ''
     if request.method == 'GET':
         image_path, title, composer, tune_type, timesig, key, file_ext, url, abc = tunes.retrieve(conn, int(tune_id))
         if title is None: title = ''
