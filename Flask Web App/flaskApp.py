@@ -5,15 +5,77 @@ conn = psycopg2.connect(secrets.getDBConnectString())
 import random
 import json
 import subprocess
-
+import base64
 import tunes, sets, books
 
 from flask import Flask, session, render_template, redirect, url_for, request, escape
 
 app = Flask(__name__)
 
-@app.route('/new_tune', methods=['GET', 'POST'])
-def new_tune():
+@app.route('/new_tune_abc', methods=['GET', 'POST'])
+def new_tune_abc():
+    if 'username' not in session: return redirect(url_for('login'))
+    if request.method == 'GET':
+        return render_template('abc_tune_form.html')
+    else:
+        title = request.form['title']
+        tune_type = request.form['type']
+        timesig = request.form['timesig']
+        if timesig is not None and timesig != '':
+            s = timesig.split('/')
+            ts = int(s[0])*10 + int(s[1])
+        key = request.form['key']
+        abc = request.form['abc']
+        if abc == '': return "ABC field must be filled"
+        idata = request.form['imgdata'].decode("utf-8")
+        idata = idata.replace('data:image/png;base64,', '')
+        idata = idata.replace(' ', '+')
+        idata = base64.b64decode(idata)
+        tune_id = tunes.create(conn, title, None, tune_type, ts, key, 'png', None, abc)
+        f = open('static/img/%d.png' % tune_id, 'wb')
+        f.write(idata)
+        f.close()
+        return redirect(url_for('edit_tune_abc', tune_id=tune_id))
+
+@app.route('/edit_tune_abc/<tune_id>', methods=['GET', 'POST'])
+def edit_tune_abc(tune_id):
+    if 'username' not in session: return redirect(url_for('login'))
+    abc = ''
+    if request.method == 'GET':
+        image_path, title, composer, tune_type, timesig, key, file_ext, url, abc = tunes.retrieve(conn, int(tune_id))
+        if title is None: title = ''
+        if tune_type is None: tune_type = ''
+        timesig = '' if timesig is None else str(timesig / 10) + '/' + str(timesig % 10)
+        if key is None: key = ''
+        if abc is None: abc = ''
+    else:
+        title = request.form['title']
+        tune_type = request.form['type']
+        timesig = request.form['timesig']
+        if timesig is not None and timesig != '':
+            s = timesig.split('/')
+            its = int(s[0])*10 + int(s[1])
+        key = request.form['key']
+        abc = request.form['abc']
+        if abc == '': return "ABC field must be filled"
+        idata = request.form['imgdata'].decode("utf-8")
+        idata = idata.replace('data:image/png;base64,', '')
+        idata = idata.replace(' ', '+')
+        idata = base64.b64decode(idata)
+        tunes.update(conn, tune_id, title, None, tune_type, its, key, 'png', '', abc)
+        f = open('static/img/' + tune_id + '.png', 'wb')
+        f.write(idata)
+        f.close()
+    return render_template('edit_tune_abc.html',
+        title=title,
+        tune_type=tune_type,
+        timesig=timesig,
+        key=key,
+        abc=abc,
+        tune_id=tune_id)
+
+@app.route('/new_tune_img', methods=['GET', 'POST'])
+def new_tune_img():
     if 'username' not in session: return redirect(url_for('login'))
     if request.method == 'GET':
         return render_template('new_tune_form.html')

@@ -45,12 +45,9 @@ function Render() {
 }
 
 function SavePng() {
-    html2canvas(document.getElementById("sheetmusic"), {
-        onrendered: function(canvas) {
-            canvas.toBlob(function(blob) {
-                saveAs(blob, "myimg.png");
+    html2canvas(document.getElementById("sheetmusic")).then(function(canvas) {
+            canvas.toBlob(function(blob) { saveAs(blob, "myimg.png"); })
             });
-        }});
 }
 </script>
 </body>

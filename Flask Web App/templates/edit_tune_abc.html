@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tunebook</title>
+    <style>
+    body {
+        background: white;
+        color: black;
+        font-family: sans-serif;
+    }
+    h1, h2 {
+        color: blue;
+    }
+    span {
+        float: right;
+    }
+    #sheetmusic {
+        margin: 0;
+    }
+    </style>
+    <script src="/static/js/abcjs_editor_2.3-min.js"></script>
+  <head>
+  <body>
+    <h1>Edit ABC tune</h1>
+    <p><a href="/">Cancel and return to home page</a></p>
+    <form action="/edit_tune_abc/{{ tune_id }}" method=post enctype=multipart/form-data>
+        <p>System-assigned tune ID: {{ tune_id }}</p>
+        <p>Title: <input name="title" type="text" value="{{ title }}"></p>
+        <p>Tune type: <input name="type" list="tunetypes" value="{{ tune_type }}">
+        <datalist id="tunetypes">
+            <option value="reel">
+            <option value="jig">
+            <option value="hornpipe">
+            <option value="waltz">
+            <option value="polka">
+            <option value="other">
+        </datalist>
+        </p>
+        <p>Time signature: <input name="timesig" list="timesigs" value="{{ timesig }}">
+        <datalist id="timesigs">
+            <option value="2/4">
+            <option value="3/4">
+            <option value="4/4">
+            <option value="6/8">
+            <option value="9/8">
+        </datalist>
+        </p>
+        <p>Key: <input name="key" type="text" value="{{ key }}"></p>
+        <p>ABC code:<br><textarea name="abc" id="abc" cols="80" rows="15">{{ abc }}</textarea></p>
+        <input id="imgdata" name="imgdata" type="hidden">
+        <p>Unselect text (so no red notes shown below), then click:&nbsp;
+        <button type="button" onclick="RenderAndSubmit()">Submit</button></p>
+    </form>
+    <div id="warnings"></div>
+    <div id="sheetmusic"></div>
+    <div id="musicimage"></div>
+    
+    <script type="text/javascript">
+    var editor;
+    window.onload = function() {
+        editor = new ABCJS.Editor("abc", { paper_id:"sheetmusic", warnings_id:"warnings" });
+    }
+
+    function RenderAndSubmit() {
+        var wrapper = document.getElementById('sheetmusic');
+        var svg = wrapper.querySelector("svg");
+        if (typeof window.XMLSerializer != "undefined") {
+            var svgData = (new XMLSerializer()).serializeToString(svg);
+        } else if (typeof svg.xml != "undefined") {
+            var svgData = svg.xml;
+        }
+
+        var svgSize = svg.getBoundingClientRect();
+        var iw = svgSize.width * 1.5;
+        var ih = svgSize.height * 1.5;
+
+        var canvas = document.createElement("canvas");
+        var ctx = canvas.getContext("2d");
+        canvas.width = iw; canvas.height = ih; // ensure PNG is full size
+
+        var img = document.createElement("img");
+        img.width = iw; img.height = ih; // ensure image is full resolution
+        img.onload = function() {
+            ctx.fillStyle = "white";
+            ctx.fillRect(0, 0, iw, ih);
+            ctx.drawImage(img, 0, 0, iw, ih); // Chrome requires iw, ih arguments; MS Edge does not
+            document.getElementById("imgdata").value = canvas.toDataURL("image/png");
+            //document.getElementById("musicimage").appendChild(img);
+            document.forms[0].submit();
+        };
+        img.setAttribute("src", "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svgData))) );
+    }
+    </script>
+  </body>
+</html>

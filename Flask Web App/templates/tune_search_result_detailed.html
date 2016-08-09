@@ -9,7 +9,7 @@
     <p><a href="/">Home</a>&nbsp;&nbsp;&nbsp;<a href="/search_tune">Search again</a></p>
     {% for tune_id, title, tune_type, timesig, key, image_path in tunes %}
         <h2>
-            {{ title }} ({{ tune_type }}, {{ timesig }}, {{ key }}
+            {{ title }} ({{ tune_type }}, {{ timesig }}, {{ key }})
             <span><a href="/edit_tune/{{ tune_id }}">Tune #{{ tune_id }}</a></span>
         </h2>
         <img src="{{ image_path }}">
