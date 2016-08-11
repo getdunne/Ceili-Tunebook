@@ -99,25 +99,26 @@ def new_tune_img():
             # user has uploaded a specific image for this tune
             tune_id = tunes.create(conn, title, None, tune_type, timesig, key, file_ext, url, abc)
             f.save('static/img/%d.%s' % (tune_id, file_ext))
+            return render_template('new_tune_result.html',
+                title=title,
+                url=url,
+                abc=abc,
+                file_ext=file_ext,
+                tune_id=tune_id)
         else:
-            # no user-supplied image; create one based on ABC
-            file_ext = 'png'
-            tune_id = tunes.create(conn, title, None, tune_type, timesig, key, file_ext, url, abc)
-            scriptName = 'tune_image.bat' if platform.system() == 'Windows' else './tune_image.sh'
-            subprocess.Popen([scriptName, str(tune_id), 'static/img'])
-        return render_template('new_tune_result.html',
-            title=title,
-            url=url,
-            abc=abc,
-            file_ext=file_ext,
-            tune_id=tune_id)
+        #    # no user-supplied image; create one based on ABC
+        #    file_ext = 'png'
+        #    tune_id = tunes.create(conn, title, None, tune_type, timesig, key, file_ext, url, abc)
+        #    scriptName = 'tune_image.bat' if platform.system() == 'Windows' else './tune_image.sh'
+        #    subprocess.Popen([scriptName, str(tune_id), 'static/img'])
+            return redirect(request.referrer)
 
-@app.route('/tune_img/<tune_id>')
-def generateTuneImage(tune_id):
-    tune_id = int(tune_id)
-    image_path, title, composer, tune_type, timesig, key, file_ext, url, abc = tunes.retrieve(conn, tune_id)
-    if abc is None: abc = ''
-    return render_template('tune_img.html', abc=abc)
+#@app.route('/tune_img/<tune_id>')
+#def generateTuneImage(tune_id):
+#    tune_id = int(tune_id)
+#    image_path, title, composer, tune_type, timesig, key, file_ext, url, abc = tunes.retrieve(conn, tune_id)
+#    if abc is None: abc = ''
+#    return render_template('tune_img.html', abc=abc)
 
 @app.route('/edit_tune/<tune_id>', methods=['GET', 'POST'])
 def editSpecificTune(tune_id):
@@ -172,12 +173,12 @@ def editSpecificTune(tune_id):
             # user uploaded a new image for this tune; replace any old one
             tunes.update(conn, tune_id, title, None, tune_type, timesig, key, file_ext, url, new_abc)
             f.save('static/img/%d.%s' % (tune_id, file_ext))
-        elif new_abc != abc:
-            # user did not upload a new tune image, but edited ABC; create new image
-            file_ext = 'png'
-            tunes.update(conn, tune_id, title, None, tune_type, timesig, key, file_ext, url, new_abc)
-            scriptName = 'tune_image.bat' if platform.system() == 'Windows' else './tune_image.sh'
-            subprocess.Popen([scriptName, str(tune_id), 'static/img'])
+        #elif new_abc != abc:
+        #    # user did not upload a new tune image, but edited ABC; create new image
+        #    file_ext = 'png'
+        #    tunes.update(conn, tune_id, title, None, tune_type, timesig, key, file_ext, url, new_abc)
+        #    scriptName = 'tune_image.bat' if platform.system() == 'Windows' else './tune_image.sh'
+        #    subprocess.Popen([scriptName, str(tune_id), 'static/img'])
             
         return redirect(request.referrer)
 
