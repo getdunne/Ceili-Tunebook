@@ -42,48 +42,58 @@ def renderTextCenter(string, font, color, center, top):
     left = center - screenWidth/2
     theScreen.blit(font.render(string, True, color), (left, top))
     
-def renderSet(setTitle, set, textHeight, columnWidth, gutterWidth, topOffset):
+def renderSet(setTitle, set, repeat, pageOffset, textHeight, columnWidth, gutterWidth, topOffset):
     theScreen.fill(WHITE)
     
-    x = gutterWidth
+    x = gutterWidth - pageOffset * (columnWidth + gutterWidth)
     y = topOffset
     
-    renderTextCenter(setTitle, theFont, BLUE, x + columnWidth/2, topOffset/2)
+    renderTextCenter(setTitle, theFont, BLACK, screenWidth/2, topOffset/2)
+    
+    moreToTheLeft = pageOffset > 0
+    moreToTheRight = False
+    firstTuneInView = False
+    
+    i = 0
+    while True:
+        if (not repeat) and i >= (len(set) - 1):
+            break
 
-    theFont.set_underline(1)
-    renderTextTL(set[0][0], theFont, BLUE, x+10, y)
-    renderTextTR(set[0][1], theFont, BLUE, columnWidth+gutterWidth-10, y)
-    theFont.set_underline(0)
-    y += textHeight
-
-    imageHeight = set[0][2]
-    theScreen.blit(set[0][3], (x, y))
-    y += imageHeight
-
-    renderTextTL(set[1][0], theFont, BLUE, x+10, y)
-    renderTextTR(set[1][1], theFont, BLUE, columnWidth+gutterWidth-10, y)
-    y += textHeight
-
-    imageHeight = set[1][2]
-    theScreen.blit(set[1][3], (x, y))
-
-    y = topOffset
-    x += columnWidth + gutterWidth
-
-    renderTextTL(set[2][0], theFont, BLUE, x+10, y)
-    renderTextTR(set[2][1], theFont, BLUE, screenWidth-gutterWidth-10, y)
-    y += textHeight
-
-    imageHeight = set[2][2]
-    theScreen.blit(set[2][3], (x, y))
-    y += imageHeight
-
-    if len(set) > 3:
-        renderTextTL(set[3][0], theFont, BLUE, x+10, y)
-        renderTextTR(set[3][1], theFont, BLUE, screenWidth-gutterWidth-10, y)
+        tuneIndex = i % len(set)
+        tune = set[tuneIndex]
+        tuneTitle = tune[0]
+        repeats = tune[1]
+        imageHeight = tune[2]
+        tuneImage = tune[3]
+        i += 1
+        
+        if (y + imageHeight) > screenHeight:
+            x += columnWidth + gutterWidth
+            y = topOffset
+        if (x + columnWidth) > screenWidth:
+            moreToTheRight = True
+            break
+        
+        if x >= 0:
+            if repeat and tuneIndex == 0:
+                if firstTuneInView:
+                    break
+                theFont.set_underline(1)
+                firstTuneInView = True
+            renderTextTL(tuneTitle, theFont, BLUE, x+10, y)
+            renderTextTR(repeats, theFont, BLUE, x+columnWidth-10, y)
+            if repeat and tuneIndex == 0:
+                theFont.set_underline(0)
         y += textHeight
-        imageHeight = set[3][2]
-        theScreen.blit(set[3][3], (x, y))
+        
+        if x >= 0:
+            theScreen.blit(tuneImage, (x, y))
+        y += imageHeight
+    
+    if moreToTheLeft:
+        renderTextTL("<< More", theFont, BLACK, gutterWidth/2, topOffset - textHeight)
+    if moreToTheRight:
+        renderTextTR("More >>", theFont, BLACK, screenWidth - gutterWidth/2, topOffset - textHeight)
 
     pygame.display.flip()
 
@@ -106,15 +116,15 @@ def makeButton(string, screenWidth, screenHeight, xc, yc):
 
 def showTitleAndChapterButtons (prevTitle, title, chapterList, buttonWidth, buttonHeight, buttonSpacing):
     buttonRects = list()
-    x = screenWidth/2
+    x = 600
     y = buttonSpacing
     theScreen.fill(WHITE)
-    renderTextCenter(title, theFont, BLUE, 300, y)
+    renderTextCenter(title, theFont, BLUE, 200, y)
     y += buttonSpacing
     if prevTitle is None:
         backRect = Rect(0,0,0,0)
     else:
-        backRect = makeButton('BACK to ' + prevTitle, buttonWidth, buttonHeight, 300, y)
+        backRect = makeButton('BACK to ' + prevTitle, buttonWidth, buttonHeight, 200, y)
     y = buttonSpacing
     for item in chapterList:
         legend = item
@@ -122,5 +132,8 @@ def showTitleAndChapterButtons (prevTitle, title, chapterList, buttonWidth, butt
             legend = item[0]
         buttonRects.append(makeButton(legend, buttonWidth, buttonHeight, x, y))
         y += buttonSpacing
+        if (y + buttonSpacing) > screenHeight:
+            x += 350
+            y = buttonSpacing
     pygame.display.flip()
     return backRect, buttonRects
