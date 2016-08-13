@@ -51,11 +51,12 @@ def awaitClickOrKey():
 def displaySet(set):
     setTitle = set[0]
     repeat = set[1]
+    wrapto = set[2]
     pageOffset = 0
-    tuneSet = tunesets.prepareSet(set[2], columnWidth)
+    tuneSet = tunesets.prepareSet(set[3], columnWidth)
     
     while True:
-        rendering.renderSet(setTitle, tuneSet, repeat, pageOffset, textHeight, columnWidth, gutterWidth, topOffset)
+        rendering.renderSet(setTitle, tuneSet, repeat, wrapto, pageOffset, textHeight, columnWidth, gutterWidth, topOffset)
         keyPressed = awaitClickOrKey()
         if keyPressed is None:
             break

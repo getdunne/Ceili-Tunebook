@@ -3,6 +3,7 @@ import requests
 import pygame
 
 base_url = 'http://test123.podzone.net'
+#base_url = 'http://127.0.0.1:5000'
 
 def fetch(image_url):
     # typical image_url is '/static/img/2.jpg

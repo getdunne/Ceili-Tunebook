@@ -199,22 +199,21 @@ def search_tune():
 
 @app.route('/set/<set_number>')
 def preview_set(set_number):
-    book_name, set_name, wrap, tune_list = sets.retrieve(conn, set_number)
-    print tune_list
+    book_name, set_name, wrap, wrap_to, tune_list = sets.retrieve(conn, set_number)
     tuneList = list()
     for (tune_id, repeats) in tune_list:
         image_path, title, composer, tune_type, timesig, key, file_ext, url, abc = tunes.retrieve(conn, tune_id)
         tuneList.append((image_path, title, repeats))
-    return render_template('set_preview.html', book_name=book_name, set_name=set_name, wrap=wrap, tune_list=tuneList)
+    return render_template('set_preview.html', book_name=book_name, set_name=set_name, wrap=wrap, wrap_to=wrap_to, tune_list=tuneList)
 
 @app.route('/json/<set_number>')
 def json_set(set_number):
-    book_name, set_name, wrap, tune_list = sets.retrieve(conn, set_number)
+    book_name, set_name, wrap, wrap_to, tune_list = sets.retrieve(conn, set_number)
     tuneList = list()
     for (tune_id, repeats) in tune_list:
         image_path, title, composer, tune_type, timesig, key, file_ext, url, abc = tunes.retrieve(conn, tune_id)
         tuneList.append((image_path, title, repeats))
-    return json.dumps([book_name, set_name, wrap, tuneList])
+    return json.dumps([book_name, set_name, wrap, wrap_to, tuneList])
 
 @app.route('/new_set', methods=['GET', 'POST'])
 def new_set():
@@ -226,38 +225,42 @@ def new_set():
         set_name = request.form['set_name']
         if 'wrap' in request.form:
             wrap = True
+            wrap_to = int(request.form['wrap_to'])
         else:
             wrap = False
+            wrap_to = 0
         tune_list = list()
         for i in [1,2,3,4,5,6]:
             tune_id = request.form['tune_id_%d' % i]
             repeats = request.form['repeats_%d' % i]
             if tune_id is None or tune_id == '': break
             tune_list.append((int(tune_id), repeats))
-        set_id = sets.create(conn, book_name, set_name, wrap, tune_list)
+        set_id = sets.create(conn, book_name, set_name, wrap, wrap_to, tune_list)
         return redirect(url_for('preview_set', set_number=set_id))
 
 @app.route('/edit_set/<set_number>', methods=['GET', 'POST'])
 def edit_set(set_number):
     if 'username' not in session: return redirect(url_for('login'))
     set_id = int(set_number)
-    book_name, set_name, wrap, tune_list = sets.retrieve(conn, set_id)
+    book_name, set_name, wrap, wrap_to, tune_list = sets.retrieve(conn, set_id)
     if request.method == 'GET':
-        return render_template('edit_set.html', set_id=set_id, book_name=book_name, set_name=set_name, wrap=wrap, tune_count=len(tune_list), tune_list=tune_list)
+        return render_template('edit_set.html', set_id=set_id, book_name=book_name, set_name=set_name, wrap=wrap, wrap_to=wrap_to, tune_count=len(tune_list), tune_list=tune_list)
     else:
         book_name = request.form['book_name']
         set_name = request.form['set_name']
         if 'wrap' in request.form:
+            wrap_to = int(request.form['wrap_to'])
             wrap = True
         else:
             wrap = False
+            wrap_to = 0
         tune_list = list()
         for i in [1,2,3,4,5,6]:
             tune_id = request.form['tune_id_%d' % i]
             repeats = request.form['repeats_%d' % i]
             if tune_id is None or tune_id == '': break
             tune_list.append((int(tune_id), repeats))
-        sets.update(conn, set_id, book_name, set_name, wrap, tune_list)
+        sets.update(conn, set_id, book_name, set_name, wrap, wrap_to, tune_list)
         return redirect(request.referrer)
 
 @app.route('/search_set', methods=['GET', 'POST'])
@@ -320,12 +323,12 @@ def expand_sets(book):
         return [name, expandedChapters]
     else:
         set_id = int(book)
-        book_name, set_name, wrap, tune_list = sets.retrieve(conn, set_id)
+        book_name, set_name, wrap, wrap_to, tune_list = sets.retrieve(conn, set_id)
         tuneList = list()
         for (tune_id, repeats) in tune_list:
             image_path, title, composer, tune_type, timesig, key, file_ext, url, abc = tunes.retrieve(conn, tune_id)
             tuneList.append([image_path, title, repeats])
-        return [set_name, wrap, tuneList]
+        return [set_name, wrap, wrap_to, tuneList]
 
 @app.route('/book_json/<book_id>')
 def book_json(book_id):

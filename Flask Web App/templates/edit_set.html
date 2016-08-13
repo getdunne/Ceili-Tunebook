@@ -10,11 +10,11 @@
     <form action="/edit_set/{{ set_id }}" method=post>
         <p>Book Name: <input name="book_name" type="text" value="{{ book_name }}"></p>
         <p>Set Name: <input name="set_name" type="text" value="{{ set_name }}"></p>
+        <p><input name="wrap" type="checkbox"
         {% if wrap %}
-            <p><input name="wrap" type="checkbox" checked>Last tune wraps to first</p>
-        {% else %}
-            <p><input name="wrap" type="checkbox">Last tune wraps to first</p>
+            checked
         {% endif %}
+        >Wraps to <input name="wrap_to" type="text" value="{{ wrap_to }}"> (0 means 1st tune)</p>
         {% for i in [1,2,3,4,5,6] %}
             <p>Tune {{ i }}:
             {% if i <= tune_count %}

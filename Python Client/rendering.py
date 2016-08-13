@@ -42,7 +42,7 @@ def renderTextCenter(string, font, color, center, top):
     left = center - screenWidth/2
     theScreen.blit(font.render(string, True, color), (left, top))
     
-def renderSet(setTitle, set, repeat, pageOffset, textHeight, columnWidth, gutterWidth, topOffset):
+def renderSet(setTitle, set, repeat, wrapto, pageOffset, textHeight, columnWidth, gutterWidth, topOffset):
     theScreen.fill(WHITE)
     
     x = gutterWidth - pageOffset * (columnWidth + gutterWidth)
@@ -59,7 +59,9 @@ def renderSet(setTitle, set, repeat, pageOffset, textHeight, columnWidth, gutter
         if (not repeat) and i >= (len(set) - 1):
             break
 
-        tuneIndex = i % len(set)
+        tuneIndex = i
+        while tuneIndex >= len(set):
+            tuneIndex -= (len(set) - wrapto)
         tune = set[tuneIndex]
         tuneTitle = tune[0]
         repeats = tune[1]
@@ -78,11 +80,12 @@ def renderSet(setTitle, set, repeat, pageOffset, textHeight, columnWidth, gutter
             if repeat and tuneIndex == 0:
                 if firstTuneInView:
                     break
-                theFont.set_underline(1)
                 firstTuneInView = True
+            if repeat and tuneIndex == wrapto:
+                theFont.set_underline(1)
             renderTextTL(tuneTitle, theFont, BLUE, x+10, y)
             renderTextTR(repeats, theFont, BLUE, x+columnWidth-10, y)
-            if repeat and tuneIndex == 0:
+            if repeat and tuneIndex == wrapto:
                 theFont.set_underline(0)
         y += textHeight
         

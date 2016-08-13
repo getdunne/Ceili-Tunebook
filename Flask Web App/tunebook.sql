@@ -19,6 +19,7 @@ CREATE TABLE sets
     book_name text,     -- name of original source book, e.g. "KCB Big Book"
     set_name text,      -- title for this set
     wrap boolean,       -- true if set wraps from last tune to first
+    wrap_to integer,    -- 0-based offset of tune to wrap to
     tune_list text      -- JSON list of 2-element lists "[[tune_id, "(2A,2B)x2"], ... ]"
 );
 

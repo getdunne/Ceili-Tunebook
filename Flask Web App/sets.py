@@ -1,9 +1,9 @@
 import psycopg2
 import json
 
-def create(conn, book_name, set_name, wrap, tune_list):
+def create(conn, book_name, set_name, wrap, wrap_to, tune_list):
     cur = conn.cursor()
-    cur.execute('insert into sets (book_name, set_name, wrap, tune_list) values (%s, %s, %s, %s) returning id', (book_name, set_name, wrap, json.dumps(tune_list)))
+    cur.execute('insert into sets (book_name, set_name, wrap, wrap_to, tune_list) values (%s, %s, %s, %s, %s) returning id', (book_name, set_name, wrap, wrap_to, json.dumps(tune_list)))
     set_id = cur.fetchone()[0]
     conn.commit()
     return set_id
@@ -11,14 +11,14 @@ def create(conn, book_name, set_name, wrap, tune_list):
 
 def retrieve(conn, set_id):
     cur = conn.cursor()
-    cur.execute('select book_name, set_name, wrap, tune_list from sets where id=%s', (set_id,))
-    book_name, set_name, wrap, tune_list = cur.fetchone()
-    return book_name, set_name, wrap, json.loads(tune_list)
+    cur.execute('select book_name, set_name, wrap, wrap_to, tune_list from sets where id=%s', (set_id,))
+    book_name, set_name, wrap, wrap_to, tune_list = cur.fetchone()
+    return book_name, set_name, wrap, wrap_to, json.loads(tune_list)
 
 
-def update(conn, set_id, book_name, set_name, wrap, tune_list):
+def update(conn, set_id, book_name, set_name, wrap, wrap_to, tune_list):
     cur = conn.cursor()
-    cur.execute('update sets set book_name=%s, set_name=%s, wrap=%s, tune_list=%s where id=%s', (book_name, set_name, wrap, json.dumps(tune_list), set_id))
+    cur.execute('update sets set book_name=%s, set_name=%s, wrap=%s, wrap_to=%s, tune_list=%s where id=%s', (book_name, set_name, wrap, wrap_to, json.dumps(tune_list), set_id))
     conn.commit()
 
 
@@ -48,12 +48,12 @@ if __name__ == '__main__':
     
     # Create
     tune_list = [(5, '(2A,2B)x2'),(6, '(2A,2B)x2'),(7, '(2A,2B)x2'),(8, '(2A,2B)x2')]
-    set_id = create(conn, 'Ceili Band Big Book', 'Reel Set 2', True, tune_list)
+    set_id = create(conn, 'Ceili Band Big Book', 'Reel Set 2', True, 0, tune_list)
     print 'Create: set_id =', set_id
     
     # Update
     tune_list = [(1, '(2A,2B)x2'),(2, '(2A,2B)x2'),(3, '(2A,2B)x2'),(4, '(2A,2B)x2')]
-    update(conn, set_id, 'Ceili Band Bigger Book', 'Reel Set 1', False, tune_list)
+    update(conn, set_id, 'Ceili Band Bigger Book', 'Reel Set 1', False, 0, tune_list)
     
     # Retrieve
     book_name, set_name, wrap, tune_list = retrieve(conn, set_id)
