@@ -206,6 +206,24 @@ def preview_set(set_number):
         tuneList.append((image_path, title, repeats))
     return render_template('set_preview.html', book_name=book_name, set_name=set_name, wrap=wrap, wrap_to=wrap_to, tune_list=tuneList)
 
+@app.route('/showset/<set_number>')
+def show_set(set_number):
+    book_name, set_name, wrap, wrap_to, tune_list = sets.retrieve(conn, set_number)
+    tuneList = list()
+    # once through the tune list
+    for (tune_id, repeats) in tune_list:
+        image_path, title, composer, tune_type, timesig, key, file_ext, url, abc = tunes.retrieve(conn, tune_id)
+        tuneList.append((image_path, title, repeats))
+    if wrap:
+        wrap_title = tuneList[wrap_to][1]
+        tune_count = len(tuneList)
+        for i in xrange(29):
+            # 30 more times through the repeated portion
+            for j in xrange(wrap_to, tune_count):
+                image_path, title, repeats = tuneList[j]
+                tuneList.append((image_path, title, repeats))
+    return render_template('set_show.html', set_name=set_name, tune_list=tuneList, wrap=wrap, wrap_title=wrap_title)
+
 @app.route('/json/<set_number>')
 def json_set(set_number):
     book_name, set_name, wrap, wrap_to, tune_list = sets.retrieve(conn, set_number)
@@ -278,6 +296,16 @@ def new_book():
     if 'username' not in session: return redirect(url_for('login'))
     book_id = books.create(conn, 'New Tune Book')
     return redirect(url_for('edit_book', book_number=book_id))
+    
+@app.route('/book/<book_number>')
+def show_book(book_number):
+    book_id = int(book_number)
+    name, url, content = books.retrieve(conn, book_id)
+    print json.dumps(content)
+    print
+    name2, content2 = expand_setnames([name, content])
+    print json.dumps(content2)
+    return render_template('show_book.html', book_name=name, content=json.dumps(content2))
 
 @app.route('/edit_book/<book_number>', methods=['GET', 'POST'])
 def edit_book(book_number):
@@ -313,6 +341,18 @@ def search_book():
         book_name = request.form['book_name']
         booklist = books.search(conn, book_name)
         return render_template('book_search_result.html', booklist=booklist)
+
+def expand_setnames(book):
+    if type(book) is list:
+        name, chapters = book
+        expandedChapters = list()
+        for chapter in chapters:
+            expandedChapters.append(expand_setnames(chapter))
+        return [name, expandedChapters]
+    else:
+        set_id = int(book)
+        book_name, set_name, wrap, wrap_to, tune_list = sets.retrieve(conn, set_id)
+        return [set_id, set_name]
 
 def expand_sets(book):
     if type(book) is list:

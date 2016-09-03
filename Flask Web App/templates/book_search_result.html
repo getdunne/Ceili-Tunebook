@@ -7,9 +7,11 @@
   <body>
     <h1>Search Results</h1>
     <p><a href="/">Home</a>&nbsp;&nbsp;&nbsp;<a href="/search_book">Search again</a></p>
-    <p>Click on any book title to edit</p>
+    <p>Click on any book title to view/edit</p>
     {% for book_id, book_name, url in booklist %}
-        <a href="/edit_book/{{ book_id }}">{{ book_id }}: {{ book_name }}</a><br>
+        <a href="/book/{{ book_id }}">{{ book_id }}: {{ book_name }}</a>
+        &nbsp;&nbsp;<a href="/edit_book/{{ book_id }}">(edit this book)</a>
+        <br>
         {% if url %}
         <img src="{{ url }}"><br>
         {% endif %}

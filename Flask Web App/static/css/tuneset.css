@@ -1,0 +1,20 @@
+/* Basic style */
+body {
+    font-family: sans-serif;
+}
+span {
+    float: right;
+}
+img {
+    max-width: 100%;
+}
+
+/* Headings are blue */
+h1, h2 {
+    color: blue;
+}
+
+/* class "wrap-start" indicates 1st tune of repeated group */
+.wrap-start {
+    text-decoration: underline;
+}

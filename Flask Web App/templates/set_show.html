@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ set_name }}</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/tuneset.css">
+    <script src="/static/js/jigset.js" defer></script>
+  <head>
+  <body>
+    {% for item in tune_list %}
+        {% if wrap and item[1]==wrap_title %}
+        <h2 class="wrap-start">
+        {% else %}
+        <h2>
+        {% endif %}
+        {{ item[1] }}<span>{{ item[2] }}</span>
+        </h2>
+        <img src="{{ item[0] }}">
+    {% endfor %}
+  </body>
+</html>
+
