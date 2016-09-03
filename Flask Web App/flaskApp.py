@@ -210,6 +210,7 @@ def preview_set(set_number):
 def show_set(set_number):
     book_name, set_name, wrap, wrap_to, tune_list = sets.retrieve(conn, set_number)
     tuneList = list()
+    wrap_title = ""
     # once through the tune list
     for (tune_id, repeats) in tune_list:
         image_path, title, composer, tune_type, timesig, key, file_ext, url, abc = tunes.retrieve(conn, tune_id)
