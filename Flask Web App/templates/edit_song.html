@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tunebook</title>
+    <link href="/static/css/lyricschords.css" rel="stylesheet" type="text/css" title="formal">
+  <head>
+  <body>
+    <h1>Edit Song</h1>
+    <p><a href="/">Cancel and return to home page</a></p>
+    <form action="/edit_song/{{ tune_id }}" method=post>
+        <p>System-assigned tune ID: {{ tune_id }}</p>
+        <p>Title: <input name="title" type="text" value="{{ title }}"></p>
+        <p>Composer: <input name="composer" type="text" value="{{ composer }}"></p>
+        <p>Time signature: <input name="timesig" list="timesigs" value="{{ timesig }}">
+        <datalist id="timesigs">
+            <option value="2/4">
+            <option value="3/4">
+            <option value="4/4">
+            <option value="6/8">
+            <option value="9/8">
+        </datalist>
+        </p>
+        <p>Key: <input name="key" type="text" value="{{ key }}"></p>
+        <p>CHORD code:<br><textarea name="chord" id="chord" cols="80" rows="15">{{ chord }}</textarea></p>
+        <p><input type="submit"></input></p>
+    </form>
+    <hr>
+    {{ song_html|safe }}
+  </body>
+</html>
+

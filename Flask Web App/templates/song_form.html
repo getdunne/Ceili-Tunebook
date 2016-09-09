@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tunebook</title>
+    <style>
+    body {
+        background: white;
+        color: black;
+        font-family: sans-serif;
+    }
+    h1, h2 {
+        color: blue;
+    }
+    </style>
+  <head>
+  <body>
+    <h1>Create new Song</h1>
+    <p><a href="/">Cancel and return to home page</a></p>
+    <form action="/new_song" method=post>
+        <p>Title: <input name="title" type="text"></p>
+        <p>Composer: <input name="composer" type="text"></p>
+        <p>Time signature: <input name="timesig" list="timesigs">
+        <datalist id="timesigs">
+            <option value="2/4">
+            <option value="3/4">
+            <option value="4/4">
+            <option value="6/8">
+            <option value="9/8">
+        </datalist>
+        </p>
+        <p>Key: <input name="key" type="text"></p>
+        <p>CHORD code:<br><textarea name="chord" id="chord" cols="80" rows="15"></textarea></p>
+        <p><input type="submit"></input></p>
+    </form>
+  </body>
+</html>
+

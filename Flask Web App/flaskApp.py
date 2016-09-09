@@ -7,10 +7,65 @@ import json
 import subprocess
 import base64
 import tunes, sets, books
+import webchord
 
 from flask import Flask, session, render_template, redirect, url_for, request, escape
 
 app = Flask(__name__)
+
+@app.route('/new_song', methods=['GET', 'POST'])
+def new_song():
+    if 'username' not in session: return redirect(url_for('login'))
+    if request.method == 'GET':
+        return render_template('song_form.html')
+    else:
+        title = request.form['title']
+        composer = request.form['composer']
+        timesig = request.form['timesig']
+        if timesig is not None and timesig != '':
+            s = timesig.split('/')
+            ts = int(s[0])*10 + int(s[1])
+        key = request.form['key']
+        chord = request.form['chord']
+        if chord == '': return "CHORD field must be filled"
+        tune_id = tunes.create(conn, title, composer, None, ts, key, None, None, chord)
+        return redirect(url_for('edit_song', tune_id=tune_id))
+
+@app.route('/song/<tune_id>')
+def show_song(tune_id):
+    tune_id = int(tune_id)
+    image_path, title, composer, tune_type, timesig, key, file_ext, url, chord = tunes.retrieve(conn, tune_id)
+    return render_template('show_song.html', song_html=webchord.chopro2html(chord))
+
+@app.route('/edit_song/<tune_id>', methods=['GET', 'POST'])
+def edit_song(tune_id):
+    if 'username' not in session: return redirect(url_for('login'))
+    if request.method == 'GET':
+        image_path, title, composer, tune_type, timesig, key, file_ext, url, chord = tunes.retrieve(conn, int(tune_id))
+        if title is None: title = ''
+        if tune_type is not None:
+            return redirect(url_for('edit_tune', tune_id=tune_id))
+        timesig = '' if timesig is None else str(timesig / 10) + '/' + str(timesig % 10)
+        if key is None: key = ''
+        if chord is None: chord = ''
+    else:
+        title = request.form['title']
+        composer = request.form['composer']
+        timesig = request.form['timesig']
+        if timesig is not None and timesig != '':
+            s = timesig.split('/')
+            ts = int(s[0])*10 + int(s[1])
+        key = request.form['key']
+        chord = request.form['chord']
+        tunes.update(conn, tune_id, title, composer, None, ts, key, None, None, chord)
+    return render_template('edit_song.html',
+        title=title,
+        composer=composer,
+        timesig=timesig,
+        key=key,
+        chord=chord,
+        song_html=webchord.chopro2html(chord),
+        tune_id=tune_id)
 
 @app.route('/new_tune_abc', methods=['GET', 'POST'])
 def new_tune_abc():
