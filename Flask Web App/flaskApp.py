@@ -35,7 +35,7 @@ def new_song():
 def show_song(tune_id):
     tune_id = int(tune_id)
     image_path, title, composer, tune_type, timesig, key, file_ext, url, chord = tunes.retrieve(conn, tune_id)
-    return render_template('show_song.html', song_html=webchord.chopro2html(chord))
+    return render_template('show_song.html', song_html=webchord.chopro2html(unicode(chord, 'utf8')))
 
 @app.route('/edit_song/<tune_id>', methods=['GET', 'POST'])
 def edit_song(tune_id):
@@ -59,12 +59,12 @@ def edit_song(tune_id):
         chord = request.form['chord']
         tunes.update(conn, tune_id, title, composer, None, ts, key, None, None, chord)
     return render_template('edit_song.html',
-        title=title,
-        composer=composer,
+        title=unicode(title, 'utf8'),
+        composer=unicode(composer, 'utf8'),
         timesig=timesig,
         key=key,
-        chord=chord,
-        song_html=webchord.chopro2html(chord),
+        chord=unicode(chord, 'utf8'),
+        song_html=webchord.chopro2html(unicode(chord, 'utf8')),
         tune_id=tune_id)
 
 @app.route('/new_tune_abc', methods=['GET', 'POST'])
@@ -155,7 +155,7 @@ def new_tune_img():
             tune_id = tunes.create(conn, title, None, tune_type, timesig, key, file_ext, url, abc)
             f.save('static/img/%d.%s' % (tune_id, file_ext))
             return render_template('new_tune_result.html',
-                title=title,
+                title=unicode(title, 'utf8'),
                 url=url,
                 abc=abc,
                 file_ext=file_ext,
