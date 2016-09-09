@@ -20,8 +20,13 @@
         </tr>
     {% for tune_id, title, tune_type, timesig, key, image_path in tunes %}
         <tr>
+            {% if tune_type=='song' %}
+            <td>{{ tune_id }}</td>
+            <td><a href="/edit_song/{{ tune_id }}">edit</a></td>
+            {% else %}
             <td><a href="/edit_tune/{{ tune_id }}">{{ tune_id }}</a></td>
             <td><a href="/edit_tune_abc/{{ tune_id }}">abc</a></td>
+            {% endif %}
             <td>{{ title }}</td>
             <td>{{ tune_type }}</td>
             <td>{{ timesig }}</td>

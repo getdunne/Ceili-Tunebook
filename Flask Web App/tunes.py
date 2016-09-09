@@ -29,6 +29,7 @@ def delete(conn, tune_id):
 
 
 def search (conn, title, tune_type, key):
+    print tune_type
     if title is None or title=='':
         title = '%'
     else:
@@ -40,12 +41,15 @@ def search (conn, title, tune_type, key):
     cur = conn.cursor()
     if tune_type is None or tune_type=='':
         cur.execute('select id, title, tune_type, timesig, key, file_ext from tunes where lower(title) like lower(%s) and lower(key) like lower(%s) order by lower(title)', (title, key))
+    elif tune_type == 'song':
+        cur.execute('select id, title, tune_type, timesig, key, file_ext from tunes where lower(title) like lower(%s) and lower(key) like lower(%s) and tune_type is null order by lower(title)', (title, key))
     else:
-        cur.execute('select id, title, tune_type, timesig, key, file_ext from tunes where lower(title) like lower(%s) and lower(key) like lower(%s) and tune_type=%s', (title, key, tune_type))
+        cur.execute('select id, title, tune_type, timesig, key, file_ext from tunes where lower(title) like lower(%s) and lower(key) like lower(%s) and tune_type=%s order by lower(title)', (title, key, tune_type))
     tuneList = list()
     for tune_id, title, tune_type, timesig, key, file_ext in cur.fetchall():
         image_path = '/static/img/%d.%s' % (tune_id, file_ext)
         timesig = '' if timesig is None else str(timesig / 10) + '/' + str(timesig % 10)
+        if tune_type is None: tune_type = 'song'
         tuneList.append((tune_id, title, tune_type, timesig, key, image_path));
     return tuneList
 

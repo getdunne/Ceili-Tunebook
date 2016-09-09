@@ -10,13 +10,21 @@
     {% for tune_id, title, tune_type, timesig, key, image_path in tunes %}
         <h2>
             Tune #{{ tune_id }}: {{ title }} ({{ tune_type }}, {{ timesig }}, {{ key }})
+            {% if tune_type=='song' %}
+            <span>
+                <a href="/edit_song/{{ tune_id }}">Edit</a>
+            </span>
+            {% else %}
             <span>
                 <a href="/edit_tune/{{ tune_id }}">Edit</a>
                 &nbsp;
                 <a href="/edit_tune_abc/{{ tune_id }}">ABC</a>
             </span>
+            {% endif %}
         </h2>
+        {% if tune_type!='song' %}
         <img src="{{ image_path }}">
+        {% endif %}
     {% endfor %}
   </body>
 </html>
