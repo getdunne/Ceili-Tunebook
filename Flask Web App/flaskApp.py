@@ -14,10 +14,11 @@ from flask import Flask, session, render_template, redirect, url_for, request, e
 app = Flask(__name__)
 
 def uc(s):
-    if type(s) == 'unicode':
-        return s
-    else:
-        return unicode(s, 'utf8')
+    try:
+        s = unicode(s, 'utf8')
+    except TypeError:
+        pass
+    return s
 
 @app.route('/new_song', methods=['GET', 'POST'])
 def new_song():
