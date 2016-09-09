@@ -51,7 +51,12 @@ def chopro2html(song):
             line = line.replace(' ', '&nbsp;')
             chords = re.findall('\[.*?\]', line)
             lyrics = re.split('\[.*?]', line)
-            if lyrics[0] == '': del lyrics[0]   # line began with a chord
+            if lyrics[0] == '':
+                # line began with a chord
+                del lyrics[0]
+            else:
+                # 1st chord is at 1st break
+                chords.insert(0, '')
             
             if len(lyrics) == 1 and len(chords) == 0:
                 # line without chords
