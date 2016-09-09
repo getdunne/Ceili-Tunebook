@@ -50,7 +50,7 @@ def search (conn, title, tune_type, key):
         image_path = '/static/img/%d.%s' % (tune_id, file_ext)
         timesig = '' if timesig is None else str(timesig / 10) + '/' + str(timesig % 10)
         if tune_type is None: tune_type = 'song'
-        tuneList.append((tune_id, title, tune_type, timesig, key, image_path));
+        tuneList.append((tune_id, unicode(title, 'utf8'), tune_type, timesig, key, image_path));
     return tuneList
 
 

@@ -13,6 +13,12 @@ from flask import Flask, session, render_template, redirect, url_for, request, e
 
 app = Flask(__name__)
 
+def uc(s):
+    if type(s) == 'unicode':
+        return s
+    else:
+        return unicode(s, 'utf8')
+
 @app.route('/new_song', methods=['GET', 'POST'])
 def new_song():
     if 'username' not in session: return redirect(url_for('login'))
@@ -35,7 +41,7 @@ def new_song():
 def show_song(tune_id):
     tune_id = int(tune_id)
     image_path, title, composer, tune_type, timesig, key, file_ext, url, chord = tunes.retrieve(conn, tune_id)
-    return render_template('show_song.html', song_html=webchord.chopro2html(unicode(chord, 'utf8')))
+    return render_template('show_song.html', song_html=webchord.chopro2html(uc(chord)))
 
 @app.route('/edit_song/<tune_id>', methods=['GET', 'POST'])
 def edit_song(tune_id):
@@ -59,12 +65,12 @@ def edit_song(tune_id):
         chord = request.form['chord']
         tunes.update(conn, tune_id, title, composer, None, ts, key, None, None, chord)
     return render_template('edit_song.html',
-        title=unicode(title, 'utf8'),
-        composer=unicode(composer, 'utf8'),
+        title=uc(title),
+        composer=uc(composer),
         timesig=timesig,
         key=key,
-        chord=unicode(chord, 'utf8'),
-        song_html=webchord.chopro2html(unicode(chord, 'utf8')),
+        chord=uc(chord),
+        song_html=webchord.chopro2html(uc(chord)),
         tune_id=tune_id)
 
 @app.route('/new_tune_abc', methods=['GET', 'POST'])
