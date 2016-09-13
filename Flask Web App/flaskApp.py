@@ -367,10 +367,7 @@ def new_book():
 def show_book(book_number):
     book_id = int(book_number)
     name, url, content = books.retrieve(conn, book_id)
-    print json.dumps(content)
-    print
     name2, content2 = expand_setnames([name, content])
-    print json.dumps(content2)
     return render_template('show_book.html', book_name=name, content=json.dumps(content2))
 
 @app.route('/edit_book/<book_number>', methods=['GET', 'POST'])
@@ -481,6 +478,6 @@ import platform
 if __name__ == '__main__':
     random.seed()
     app.secret_key = secrets.getSecretKey()
-    app.debug = True #platform.system() == 'Windows'
+    app.debug = platform.system() == 'Windows'
     app.run(host='0.0.0.0')
 
