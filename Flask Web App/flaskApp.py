@@ -67,7 +67,7 @@ def edit_song(tune_id):
             ts = int(s[0])*10 + int(s[1])
         key = request.form['key']
         chord = request.form['chord']
-        tunes.update(conn, tune_id, title, uc(composer), None, ts, key, None, None, uc(chord))
+        tunes.update(conn, tune_id, title, composer, None, ts, key, None, None, chord)
     return render_template('edit_song.html',
         title=uc(title),
         composer=uc(composer),
