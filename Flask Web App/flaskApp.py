@@ -1,4 +1,7 @@
 import psycopg2
+import psycopg2.extensions
+psycopg2.extensions.register_type(psycopg2.extensions.UNICODE)
+psycopg2.extensions.register_type(psycopg2.extensions.UNICODEARRAY)
 import secrets
 conn = psycopg2.connect(secrets.getDBConnectString())
 
@@ -64,7 +67,7 @@ def edit_song(tune_id):
             ts = int(s[0])*10 + int(s[1])
         key = request.form['key']
         chord = request.form['chord']
-        tunes.update(conn, tune_id, title, composer, None, ts, key, None, None, chord)
+        tunes.update(conn, tune_id, title, uc(composer), None, ts, key, None, None, uc(chord))
     return render_template('edit_song.html',
         title=uc(title),
         composer=uc(composer),
@@ -478,6 +481,6 @@ import platform
 if __name__ == '__main__':
     random.seed()
     app.secret_key = secrets.getSecretKey()
-    app.debug = platform.system() == 'Windows'
+    app.debug = True #platform.system() == 'Windows'
     app.run(host='0.0.0.0')
 
